@@ -26,15 +26,12 @@ def sent():
         f = requests.get(apiURL)
         data = list(f.json())
         for i in range(len(data)):
-            if data[i]['result'] == 'positive':
+            if data[i]['class'] == 'positive':
                 data[i]['positive'] = float(data[i]['score'])
                 data[i]['negative'] = round(1 - data[i]['positive'], 3)
-            if data[i]['result'] == 'negative':
+            if data[i]['class'] == 'negative':
                 data[i]['negative'] = float(data[i]['score'])
                 data[i]['positive'] = round(1 - data[i]['negative'], 3)
-        # Test
-        print(data)
-        print(text)
         return render_template('index.html', data=data, text=text, file=None)
 
 @app.route('/upload', methods=['POST'])
@@ -54,7 +51,7 @@ def process_file():
             f = requests.get(apiURL)
             f = f.json()
             print(f[0])
-            new_data = pd.Series([csv.iloc[i]['TEXT'], f[0]['result'], f[0]['score']], index = data.columns)
+            new_data = pd.Series([csv.iloc[i]['TEXT'], f[0]['class'], f[0]['score']], index = data.columns)
             data = data.append(new_data, ignore_index=True)
             # tương tự, lưu mỗi time thui
         data.to_csv('./static/' + time_sub + '.csv', index=False, encoding='utf-8')
