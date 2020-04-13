@@ -28,10 +28,10 @@ def sent():
         for i in range(len(data)):
             if data[i]['class'] == 'positive':
                 data[i]['positive'] = float(data[i]['score'])
-                data[i]['negative'] = round(1 - data[i]['positive'], 3)
+                data[i]['negative'] = round(100 - data[i]['positive'], 3)
             if data[i]['class'] == 'negative':
                 data[i]['negative'] = float(data[i]['score'])
-                data[i]['positive'] = round(1 - data[i]['negative'], 3)
+                data[i]['positive'] = round(100 - data[i]['negative'], 3)
         return render_template('index.html', data=data, text=text, file=None)
 
 @app.route('/upload', methods=['POST'])
