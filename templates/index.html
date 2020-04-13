@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <title>CMC-Sentiment Analysis</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            font-family: Rubik, Helvetica, Arial, sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        h1 {
+            width: 60%;
+        }
+
+        input {
+            padding: 8px !important;
+            font-size: 12px;
+            width: 100%;
+            height: 45px;
+        }
+
+        .module-test-api .query-col .text-form textarea {
+            font-size: 15px;
+            padding: 13px 16px;
+            color: #222;
+            box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, .05);
+            border: 1px solid #008bff8c;
+            resize: none;
+            height: 246px;
+        }
+
+        textarea {
+            overflow: auto;
+            width: 100%;
+            vertical-align: top;
+        }
+
+        ::selection {
+            background: #b9d8f7;
+        }
+
+        .navbar-brand {
+            background: #007bff;
+            color: #FFF;
+            width: 60%;
+        }
+
+        .module-test-api .query-col .text-ctr .btn-default,
+        .btn-default {
+            margin-top: 10px;
+            border-radius: 6px;
+            background-color: #008bff;
+            box-shadow: 0 3px 10px 0 rgba(0, 139, 255, .3);
+            font-size: 16px;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .module-test-api .result-col.result-col-type-table {
+            background-color: #fff;
+            border-left: 1px solid #ececec;
+        }
+
+        .module-test-api .query-col,
+        .module-test-api .result-col {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .module-test-api .query-col,
+        .module-test-api .result-col {
+            width: 50%;
+            float: left;
+        }
+
+
+        .module-test-api .query-col,
+        .module-test-api .result-col {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding: 26px;
+            height: 400px;
+            background-color: #fff;
+        }
+
+        .positive-result {
+            left: 20%;
+        }
+
+        .negative-result {
+            left: 50%;
+        }
+
+
+        .row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        td {
+            display: table-cell;
+            vertical-align: inherit;
+        }
+
+        *,
+        :after,
+        :before {
+            box-sizing: border-box;
+        }
+
+        .btn-blue {
+            background: #0071e0 !important;
+            border: 1px solid #0071e0;
+            color: #fff !important;
+            outline: none;
+        }
+
+        .btn-blue {
+            display: block !important;
+            width: 100px;
+        }
+
+        .btn-blue {
+            padding: 8px 12px !important;
+            display: inline-block;
+        }
+
+        .btn {
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            margin: 0;
+            font: inherit;
+            color: inherit;
+        }
+
+        .container-fluid {
+            margin: 20px auto 0;
+        }
+    </style>
+</head>
+
+<body onload="OnLoad()">
+    <div class="container">
+        <div class="container p-3 my-3 bg-primary text-white">
+            <a href="/" class="navbar-brand">
+                <h1>Sentiment Analysis</h1>
+            </a>
+            <p>Phân tích cảm xúc chủ quan của khách hàng qua các câu mô tả</p>
+        </div>
+        <div class="module-test-api extractor">
+            <div class="query-col">
+                <h3>Nhập văn bản mô tả</h3>
+                <form action="/send" method="POST">
+                    <div class="form-group margin-top-15">
+                        <textarea id="multilangDemo" name="text">{{text}}</textarea>
+                    </div>
+                    <select id="englishEmotion" onchange="selectChanged(this)"
+                        style="padding: 8px!important;font-size: 12px;width: 100%;height: 45px">
+                        <option value="1">Đội ngũ giảng viên và trợ giảng tâm huyết, nhiệt tình với học viên. Bài học
+                            hay,
+                            bổ ích, có
+                            những phương pháp học tập mới, dễ dàng tiếp cận với tiếng anh. Môi trường học tập thân
+                            thiện,
+                            thoải mái, không bị gò bó.</option>
+                        <option value="2">Lớp đông, chưa được quan tâm hết mức, chưa cải thiện đc nhiều sau khóa học
+                        </option>
+                        <option value="3"> Đôi khi lớp học đông trong khi diện tích lớp học nhỏ, tạo nên bất tiện trong
+                            một
+                            vài
+                            hoạt
+                            động tập thể. Cơ sở vật chất chưa ổn định, số lượng học viên 1 lớp đông và khả năng chênh
+                            lệch
+                            lớn</option>
+                        <option value="4">Đội ngũ ở trung tâm là 100% giáo viên bản ngữ. Vừa học lại vừa có thực hành
+                            luôn
+                            nên thực sự dễ hiểu</option>
+                        <option value="5">Môi trường ở đây được, nói và trao đổi
+                            tiếng anh tốt. Giáo viên truyền cảm hứng cho sinh viên rất nhiệt tình và tâm huyết.</option>
+                        <option value="6" style="font-style: italic; color:#777">+ Nhập mô tả của bạn
+                        </option>
+                    </select>
+                    <div class="col-sm-3 text-ctr">
+                        <button class="btn btn-default btn-blue btn-mlang-demo" data-trigger="multilingual-sentiment"
+                            type="submit">Phân
+                            tích</button>
+                    </div>
+                </form>
+                <!-- Hiển thị kết quả cho 1 câu mô tả-->
+                <div class="container-fluid result">
+                    {% if data!=None %}
+                    {% for item in data %}
+                    <div class="row emoji multi-sentiment">
+                        <div class="col-sm-2 positive-result" data-sentiment="positive" id="positiveStyle">
+                            <img src="static/images/positive.png">
+                            <p>Positive</p>
+                            <p id="positive">{{item.positive}}</p>
+                        </div>
+
+                        <div class="col-sm-2 negative-result" data-sentiment="negative" id="negativeStyle"">
+                            <img src=" static/images/negative.png">
+                            <p>Negative</p>
+                            <p id="negative">{{item.negative}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <script>
+                        var scorePositive = Number(document.getElementById('positive').innerHTML);
+                        var scoreNegative = Number(document.getElementById('negative').innerHTML);
+                        var positionStyle = document.getElementById('positiveStyle');
+                        var negativeStyle = document.getElementById('negativeStyle');
+                        if (scorePositive > scoreNegative) {
+                            positionStyle.style.opacity = 50;
+                            negativeStyle.style.opacity = 0.5;
+                        }
+                        else {
+                            positionStyle.style.opacity = 0.5;
+                            negativeStyle.style.opacity = 50;
+                        }
+                    </script>
+                    {% endif %}
+                </div>
+                <!-- Kết thúc hiển thị kết quả cho câu mô tả -->
+            </div>
+            <div class="result-col result-col-type-table">
+                <!-- Khung gửi file -->
+                <h3>Tải lên file</h3>
+                <div class="input-group mb-3">
+                    <form method="POST" action="/upload" enctype="multipart/form-data">
+                        <div class="input-group-prepend">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept=".csv" required="true" name="file"
+                                    onchange="$('#upload-file-info').html(this.files[0].name)">
+                                <label class="custom-file-label" id="upload-file-info">Chọn File</label>
+                            </div>
+                        </div>
+
+                        <div class="input-group-append">
+                            <button class="input-group-text btn-blue btn btn-default" type="submit">Tải lên</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Kết thúc khung gửi file -->
+                <!-- Diglog tải file về-->
+                {% if file!=None %}
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    Tải về kết quả dự đoán
+                </button>
+
+                <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Tải file về</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Kết quả phân tích <a href="./static/{{file}}" target="_blank">Click vào đây để tải
+                                        về!</a></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <!--<button type="button" class="btn btn-primary" onclick="Test()">Save changes</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- Kết thúc diaglog-->
+            </div>
+        </div>
+    </div>
+    <script>
+        var optionHTML = document.getElementById("englishEmotion");
+        var textHTML = document.getElementById("multilangDemo");
+        var text = textHTML.innerHTML;
+        function OnLoad() {
+            // Ẩn hoặc hiện khung option và textarea tuỳ theo có text hay không
+            if (text == '') {
+                textHTML.classList.add('collapse');
+                optionHTML.classList.remove('collapse');
+            }
+            else {
+                optionHTML.classList.add('collapse');
+                textHTML.classList.remove('collapse');
+            }
+        }
+        function selectChanged(obj) {
+            var value = Number(obj.value);
+            if (value === 6) {
+                textHTML.classList.remove("collapse");
+                optionHTML.classList.add("collapse");
+            }
+            else if (value < 6) {
+                textHTML.innerHTML = optionHTML.options[value - 1].text
+            }
+        }
+    </script>
+</body>
+
+</html>

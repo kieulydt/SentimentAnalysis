@@ -1,0 +1,4 @@
+TEXT,RESULT,SCORE
+chất lượng tốt,negative,0.409
+tồi tệ,positive,0.988
+chất lượng xấu,positive,0.99
