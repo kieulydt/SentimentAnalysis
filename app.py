@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import datetime, date, time, timezone
 
 
+web_port = 8907
 
 app = Flask(__name__)
 text = None
@@ -62,4 +63,4 @@ def process_file():
         return render_template('index.html', data=None, text='', file=time_sub)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=web_port, debug=True)
