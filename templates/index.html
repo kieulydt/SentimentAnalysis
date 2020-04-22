@@ -196,7 +196,7 @@
                 <h3>Nhập văn bản mô tả</h3>
                 <form action="/send" method="POST">
                     <div class="form-group margin-top-15">
-                        <textarea id="multilangDemo" name="text">{{text}}</textarea>
+                        <textarea class="collapse" id="multilangDemo" name="text">{{text}}</textarea>
                     </div>
                     <select id="englishEmotion" onchange="selectChanged(this)"
                         style="padding: 8px!important;font-size: 12px;width: 100%;height: 45px">
@@ -228,7 +228,7 @@
                             <p id="positive">{{item.positive}}</p>
                         </div>
 
-                        <div class="col-sm-2 negative-result" data-sentiment="negative" id="negativeStyle"">
+                        <div class="col-sm-2 negative-result" data-sentiment="negative" id="negativeStyle">
                             <img src=" static/images/negative.png">
                             <p>Negative</p>
                             <p id="negative">{{item.negative}}</p>
@@ -260,8 +260,8 @@
                     <form method="POST" action="/upload" enctype="multipart/form-data">
                         <div class="input-group-prepend">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" accept=".csv" required="true" name="file"
-                                    onchange="$('#upload-file-info').html(this.files[0].name)">
+                                <input type="file" class="custom-file-input" accept=".csv" required="required" name="file"
+                                    onchange="$('#upload-file-info').html(this.files[0].name)"/>
                                 <label class="custom-file-label" id="upload-file-info">Chọn File</label>
                             </div>
                         </div>
@@ -303,6 +303,8 @@
         </div>
     </div>
     <script>
+        mySelect = document.getElementById("englishEmotion");
+        mySelect.selectedIndex = -1;
         var optionHTML = document.getElementById("englishEmotion");
         var textHTML = document.getElementById("multilangDemo");
         var text = textHTML.innerHTML;
@@ -320,6 +322,7 @@
         function selectChanged(obj) {
             var value = Number(obj.value);
             if (value === 6) {
+                textHTML.innerHTML = '';
                 textHTML.classList.remove("collapse");
                 optionHTML.classList.add("collapse");
             }
