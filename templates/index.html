@@ -180,6 +180,18 @@
         .container-fluid {
             margin: 20px auto 0;
         }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
     </style>
 </head>
 
@@ -260,8 +272,8 @@
                     <form method="POST" action="/upload" enctype="multipart/form-data">
                         <div class="input-group-prepend">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" accept=".csv" required="required" name="file"
-                                    onchange="$('#upload-file-info').html(this.files[0].name)"/>
+                                <input type="file" class="custom-file-input" accept=".csv" required="required"
+                                    name="file" onchange="$('#upload-file-info').html(this.files[0].name)" />
                                 <label class="custom-file-label" id="upload-file-info">Chọn File</label>
                             </div>
                         </div>
@@ -271,6 +283,71 @@
                         </div>
                     </form>
                 </div>
+
+                <!--Định dạng file-->
+
+                <div>
+                    <p><i>Tham khảo định dạng file tại <a href="#exampleModalCenter" onclick="viewFormat()"
+                                data-toggle="modal" data-target="#exampleModalCenter">đây</a></i></p>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Định dạng file</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>File được lưu ở định dạng <b>.csv</b></p>
+                                <p>Dung lượng không quá <b>15MB</b></p>
+                                <table>
+                                    <tr>
+                                        <th>TEXT</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tôi vào được lớp nhưng chất lượng tín hiệu tệ, không nghe rõ, sau đó bị
+                                            thoát
+                                            ra và không vào được nữa, mặc dù tôi dùng mạng đường truyền tốc độ cao
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Đây là lớp học tiếng Anh mà giáo viên nói tiếng Việt quá nhiều trong lớp học
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Giáo viên dạy rất nhiệt tình và cẩn thận
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Giáo viên còn trẻ nhưng rất tốt trong cách dạy, mình được nạp năng lượng từ
+                                            bạn trẻ này
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Giáo viên còn trẻ nhưng rất tốt trong cách dạy, mình được nạp năng lượng từ
+                                            bạn trẻ này
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Kết thúc khung gửi file -->
                 <!-- Diglog tải file về-->
                 {% if file!=None %}
@@ -330,6 +407,7 @@
                 textHTML.innerHTML = optionHTML.options[value - 1].text
             }
         }
+
     </script>
 </body>
 

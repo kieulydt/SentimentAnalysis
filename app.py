@@ -23,8 +23,8 @@ def sent():
         global text
         global data
         text = request.form['text']
-        apiURL = 'http://124.158.1.125:8807/sentiment?text=' + text
-        # apiURL = 'http://0.0.0.0:8907/sentiment?text=' + text
+        # apiURL = 'http://124.158.1.125:8807/sentiment?text=' + text
+        apiURL = 'http://0.0.0.0:8907/sentiment?text=' + text
         f = requests.get(apiURL)
         data = list(f.json())
         for i in range(len(data)):
@@ -49,8 +49,8 @@ def process_file():
         cols = ['TEXT', 'RESULT', 'SCORE']
         data = pd.DataFrame(columns=cols)
         for i in range(len(csv)):
-            apiURL = 'http://124.158.1.125:8807/sentiment?text=' + csv['TEXT'][i]
-            #apiURL = 'http://0.0.0.0:8907/sentiment?text=' + csv['TEXT'][i]
+            # apiURL = 'http://124.158.1.125:8807/sentiment?text=' + csv['TEXT'][i]
+            apiURL = 'http://0.0.0.0:8907/sentiment?text=' + csv['TEXT'][i]
             f = requests.get(apiURL)
             f = f.json()
             print(f[0])
@@ -62,5 +62,5 @@ def process_file():
         return render_template('index.html', data=None, text='', file=time_sub)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=web_port, debug=True)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=web_port, debug=True)
+    # app.run(debug=True)
